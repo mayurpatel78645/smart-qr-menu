@@ -1,4 +1,4 @@
-# 🍽️ SmartQR Menu OS (Enterprise Edition)
+# 🍽️ SmartQR Menu
 
 **Real-Time Digital Menu, Inventory Control & Restaurant Command Center**
 
