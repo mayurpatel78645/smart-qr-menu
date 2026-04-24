@@ -1,54 +1,67 @@
-# 🍽️ SmartQR Menu
+# 🍽️ SmartQR Menu OS (Enterprise Edition)
 
-### Real-Time QR Menu + Inventory Control for Modern Restaurants
+**Real-Time Digital Menu, Inventory Control & Restaurant Command Center**
 
-SmartQR Menu is a live digital menu system that helps restaurants prevent wrong orders, reduce staff interruptions, and instantly update sold-out items across all customer devices.
+SmartQR Menu OS is a live digital menu platform that transforms static QR menus into a real-time operations system for modern restaurants, cafés, bars, and cloud kitchens.
 
-When the kitchen marks an item as unavailable ("86'd"), it updates on every customer menu in real-time — no page refresh needed.
+When an item is marked unavailable ("86'd"), it instantly updates across every customer device with no page refresh required. Guests can also request service directly from their phones, helping teams respond faster during busy hours.
 
 ---
 
 ## 🚀 Why This Project Matters
 
-Traditional QR menus are static PDFs or outdated webpages. SmartQR Menu turns menus into a dynamic operations tool.
+Traditional QR menus are often static PDFs or outdated webpages. They cannot adapt to live service conditions.
 
-### ✅ Benefits
+SmartQR Menu OS solves that by connecting the kitchen, floor staff, and guests through one real-time system.
 
-* Prevent customers from ordering unavailable items
+### ✅ Business Benefits
+
+* Prevent orders for sold-out items
 * Reduce staff interruptions during rush hours
-* Improve communication between kitchen and front-of-house
+* Improve kitchen ↔ front-of-house communication
+* Faster service with fewer mistakes
 * Better guest experience
-* Faster service and fewer mistakes
+* Easy to scale across multiple locations
 
 ---
 
-## ✨ Features
+## ✨ Core Features
 
-### 📱 Customer QR Menu
+## 📱 Customer Experience
 
 * Mobile-first responsive design
-* Category-based layout
-* Veg / spicy / chef special indicators
+* Premium dark-mode UI
+* Table-specific access (`?table=5`)
+* Veg / Non-Veg / Spicy / Chef Special indicators
+* Live sold-out updates
+* One-tap **Call for Service** button
 * Fast loading experience
-* Real-time availability updates
 
-### 👨‍🍳 Admin Dashboard
+## 👨‍🍳 Admin Command Center
 
 * Toggle item availability instantly
-* Built for fast-paced restaurant operations
-* Clean and simple interface
+* View incoming service requests in real time
+* Manage menu data from dashboard
+* Designed for fast-paced operations
+* Clean and simple workflow
 
-### ⚡ Live Sync Engine
+## 📋 Magic Excel Import
 
-* Supabase Realtime subscriptions
+Bulk-create menu items by pasting rows from Excel or Google Sheets:
+
+* Name
+  n- Price
+* Description
+* Image URL
+
+Build or update a full menu in seconds.
+
+## ⚡ Live Sync Engine
+
+* Powered by Supabase Realtime
 * Automatic updates across devices
-* Polling fallback for restricted networks
-
-### 🌍 Production Ready
-
-* Deployed on Vercel
-* Fast global performance
-* Easy to scale for multiple restaurants
+* No manual refresh needed
+* Reliable for active service environments
 
 ---
 
@@ -56,7 +69,7 @@ Traditional QR menus are static PDFs or outdated webpages. SmartQR Menu turns me
 
 | Layer    | Technology        |
 | -------- | ----------------- |
-| Frontend | Next.js 16, React |
+| Frontend | Next.js, React    |
 | Styling  | Tailwind CSS      |
 | Icons    | Lucide React      |
 | Backend  | Supabase          |
@@ -68,38 +81,36 @@ Traditional QR menus are static PDFs or outdated webpages. SmartQR Menu turns me
 
 ## 📸 Demo Routes
 
-```bash
-a Customer Menu: /mayur-bistro
-Admin Dashboard: /admin
-```
+* Customer Menu: `/mayur-bistro`
+* Admin Dashboard: `/admin`
 
 ---
 
 ## ⚙️ Local Setup
 
-### 1. Clone Repository
+## 1. Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/smart-qr-menu.git
 cd smart-qr-menu
 ```
 
-### 2. Install Dependencies
+## 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Create Environment Variables
+## 3. Create Environment Variables
 
-Create `.env.local`
+Create a `.env.local` file:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-### 4. Database Setup
+## 4. Database Setup
 
 Run in Supabase SQL Editor:
 
@@ -109,7 +120,7 @@ CREATE TABLE restaurants (
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   logo_url TEXT,
-  primary_color TEXT DEFAULT '#e11d48',
+  primary_color TEXT DEFAULT '#1a0514',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -134,10 +145,19 @@ CREATE TABLE menu_items (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+CREATE TABLE service_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  restaurant_id UUID REFERENCES restaurants(id) ON DELETE CASCADE,
+  table_number TEXT NOT NULL,
+  status TEXT DEFAULT 'pending',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 ALTER PUBLICATION supabase_realtime ADD TABLE menu_items;
+ALTER PUBLICATION supabase_realtime ADD TABLE service_requests;
 ```
 
-### 5. Run Development Server
+## 5. Run Development Server
 
 ```bash
 npm run dev
@@ -147,46 +167,42 @@ Open `http://localhost:3000`
 
 ---
 
-## 🚀 Deploy to Vercel
+## 🌍 Deployment
 
 ```bash
 npx vercel
 npx vercel --prod
 ```
 
-Add your environment variables in the Vercel dashboard before production deploy.
+Add environment variables in the Vercel dashboard before production deployment.
 
 ---
 
 ## 🧠 Real Business Use Cases
 
-* Restaurants: Instantly disable sold out dishes
-* Cafes: Switch breakfast/lunch menus
-* Bars: Hide unavailable drinks live
-* Cloud Kitchens: Manage multiple brands
+* **Restaurants:** Instantly disable sold-out dishes
+* **Cafés:** Switch breakfast / lunch menus live
+* **Bars:** Hide unavailable drinks in real time
+* **Cloud Kitchens:** Manage multiple brands from one system
+* **Chains:** Standardize menus across locations
 
 ---
 
 ## 👨‍💻 Why I Built This
 
-I worked in professional kitchens and saw how often service gets delayed because menus cannot adapt in real-time. This project combines restaurant operations experience with modern web development.
+I worked in professional kitchens and saw how often service slows down because menus cannot adapt during a rush. This project combines real restaurant operations experience with modern web development to remove friction for both staff and guests.
 
 ---
 
 ## 🔮 Future Improvements
 
-* Multi-restaurant SaaS version
+* Multi-location SaaS version
 * Analytics dashboard
 * AI upselling suggestions
 * Multi-language menus
-* Table ordering integration
-* Inventory auto deduction
-
----
-
-## 🤝 Contributing
-
-Pull requests and suggestions are welcome.
+* Table ordering & payment flow
+* Inventory auto-deduction
+* Role-based staff permissions
 
 ---
 
@@ -198,4 +214,4 @@ MIT License
 
 ## ⭐ Support
 
-If you like this project, star the repository.
+If you like this project, please star the repository.
